@@ -1,5 +1,55 @@
 // 마지막으로 가져온 searchAfter 값을 저장하는 변수 (실시간 업데이트용)
-let lastSearchAfter = null;// 현재 정렬 순서 설명 출력 함수
+let lastSearchAfter = null;
+
+// div.css-1ve7v1a.eq36rvw5 위에 글자를 띄우는 함수
+function addTextAboveTargetDiv() {
+  // 대상 요소 찾기
+  const targetDiv = document.querySelector('div.css-1ve7v1a.eq36rvw5');
+  
+  if (targetDiv) {
+    // 이미 텍스트가 추가되었는지 확인 (중복 방지)
+    const existingText = document.querySelector('#custom-text-above-target');
+    if (existingText) {
+      console.log('이미 텍스트가 추가되어 있습니다.');
+      return;
+    }
+    
+    // 텍스트 요소 생성
+    const textElement = document.createElement('div');
+    textElement.id = 'custom-text-above-target';
+    
+    // HTML 내용 설정 (링크 포함)
+    textElement.innerHTML = `이 확장 프로그램은 폐쇄되었습니다! 대신 <a href="https://chromewebstore.google.com/detail/%EC%97%94%ED%8A%B8%EB%A6%AC-intydse-tyd/efbcdeckfdnjighafklmplnlkjhdggna" target="_blank" rel="noopener noreferrer" style="color: #FFD700; text-decoration: underline; font-weight: bold;">실시간 엔이 V1</a>을 이용해 주세요!`;
+    
+    // 스타일 적용
+    textElement.style.cssText = `
+      background-color: #f44336;
+      color: white;
+      padding: 15px 20px;
+      margin: 10px 0;
+      border-radius: 5px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
+      position: relative;
+      border: 2px solid #d32f2f;
+    `;
+    
+    // 대상 div 바로 위에 텍스트 삽입
+    targetDiv.parentNode.insertBefore(textElement, targetDiv);
+    
+    console.log('div.css-1ve7v1a.eq36rvw5 위에 폐쇄 안내 텍스트가 추가되었습니다.');
+  } else {
+    console.log('div.css-1ve7v1a.eq36rvw5 요소를 찾을 수 없습니다. 나중에 다시 시도합니다.');
+    
+    // 요소가 없으면 3초 후에 다시 시도
+    setTimeout(addTextAboveTargetDiv, 3000);
+  }
+}
+
+// 현재 정렬 순서 설명 출력 함수
 function logCurrentSortOrder() {
   const sortValue = getSortParameter();
   if (sortValue === "created") {
@@ -1128,6 +1178,9 @@ function initialize() {
   
   // 리스트 페이지에서만 작동
   if (pageUrl.includes('/list') || pageUrl.endsWith('/entrystory/')) {
+    // div.css-1ve7v1a.eq36rvw5 위에 텍스트 추가
+    addTextAboveTargetDiv();
+    
     // 현재 정렬 순서 로그 출력
     logCurrentSortOrder();
     
